@@ -1,350 +1,196 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <meta charset="utf-8">
-  <title>Sala da Tsunade</title>
+<meta charset="UTF-8">
+<title>Misión Shinobi</title>
 
-  <!-- AFRAME -->
-  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+<!-- FUENTE FUTURISTA -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
 
-  <!-- FÍSICA -->
-  <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Orbitron', sans-serif; /* APLICADA A TODO */
+}
 
-  <!-- FUENTE -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
+body{
+  background:black;
+  overflow:hidden;
+  color:white;
+}
 
-  <style>
-    body { margin:0; overflow:hidden; }
+/* ESCENAS */
+.escena{
+  position:absolute;
+  width:100%;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  text-align:center;
+  opacity:0;
+  pointer-events:none;
+  transition: opacity 1.5s ease;
+}
 
-    /* Escena invisible al inicio */
-    a-scene{
-      opacity:0;
-      pointer-events:none;
-    }
+.escena.activa{
+  opacity:1;
+  pointer-events:auto;
+}
 
-    /* ===== INTRO ===== */
-    #introPantalla{
-      position:absolute;
-      width:100%;
-      height:100%;
-      background:url("img/escritorio.webp") center/cover no-repeat;
-      background-size:110%;
-      animation: zoomFondo 10s ease-out forwards;
-      z-index:20;
-    }
+/* FONDO CON ZOOM */
+.fondo{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background-size:cover;
+  background-position:center;
+  z-index:-2;
+  animation: zoomDramatico 18s ease-in-out forwards;
+  filter: brightness(0.22);
+}
 
-    .introOverlay{
-      width:100%;
-      height:100%;
-      background:rgba(0,0,0,0.75);
-      display:flex;
-      justify-content:center;
-      align-items:center;
-    }
+@keyframes zoomDramatico{
+  from{ transform:scale(1); }
+  to{ transform:scale(1.25); }
+}
 
-    .introTexto{
-      color:white;
-      text-align:center;
-      max-width:800px;
-      font-family:'Orbitron', sans-serif;
-      animation: fadeInTexto 3s ease-in-out;
-    }
+/* PARTÍCULAS */
+.particulas{
+  position:absolute;
+  width:100%;
+  height:100%;
+  z-index:-1;
+  overflow:hidden;
+}
 
-    .introTexto p{
-      font-size:18px;
-      line-height:1.8;
-      white-space:pre-line;
-    }
+.particula{
+  position:absolute;
+  width:4px;
+  height:4px;
+  background:orange;
+  border-radius:50%;
+  opacity:0.7;
+  animation: flotar linear infinite;
+}
 
-    @keyframes zoomFondo{
-      from{background-size:110%;}
-      to{background-size:120%;}
-    }
+@keyframes flotar{
+  from{
+    transform:translateY(100vh);
+    opacity:0;
+  }
+  to{
+    transform:translateY(-10vh);
+    opacity:0.8;
+  }
+}
 
-    @keyframes fadeInTexto{
-      from{opacity:0;}
-      to{opacity:1;}
-    }
+/* CONTENIDO */
+.contenido{
+  max-width:750px;
+  padding:20px;
+}
 
-    /* ===== MARCADOR ===== */
-    #marcadorObjetos{
-      position:absolute;
-      top:20px;
-      right:30px;
-      background:rgba(0,0,0,0.7);
-      color:#ff9900;
-      padding:12px 20px;
-      border-radius:10px;
-      font-family:'Orbitron', sans-serif;
-      z-index:15;
-      font-size:14px;
-    }
+h1{
+  font-size:3.2rem;
+  font-weight:800;
+  margin-bottom:20px;
+  color:#ffcc00; /* amarillo */
+  text-shadow:0 0 20px rgba(255,140,0,0.8);
+}
 
-    /* ===== PERGAMINO UI ===== */
-    #pergaminoUI{
-      position:absolute;
-      width:100%;
-      height:100%;
-      background:rgba(0,0,0,0.65);
-      display:none;
-      justify-content:center;
-      align-items:center;
-      z-index:10;
-    }
+p{
+  font-size:1.2rem;
+  font-weight:400;
+  line-height:1.6;
+  margin-bottom:30px;
+  color:#ff4500; /* rojo-naranja */
+  text-shadow:0 0 10px rgba(255,0,0,0.5);
+}
 
-    /* 🔥 PAPEL QUEMADO */
-    .contenidoPergamino{
-      width:650px;
-      max-height:80vh;
-      overflow-y:auto;
-      padding:60px;
-      border-radius:6px;
-      text-align:left;
-      font-family:'Orbitron', sans-serif;
-      line-height:1.8;
+button{
+  padding:15px 40px;
+  font-size:1.1rem;
+  font-weight:600;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  background:linear-gradient(45deg,#ff0000,#ff9900);
+  color:#ffff00;
+  letter-spacing:1px;
+  transition:0.3s;
+  box-shadow:0 0 15px rgba(255,140,0,0.8);
+}
 
-      background:
-        radial-gradient(circle at 20% 20%, rgba(0,0,0,0.15) 0%, transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(0,0,0,0.15) 0%, transparent 40%),
-        linear-gradient(180deg,#f2e2b8,#e6c98f);
-
-      color:#3a2400;
-
-      border:4px solid transparent;
-      border-image: radial-gradient(circle, #3b1f00 40%, #8b5a2b 70%, transparent 90%) 1;
-
-      box-shadow:
-        0 0 60px rgba(0,0,0,0.6),
-        inset 0 0 40px rgba(0,0,0,0.3);
-    }
-
-    .contenidoPergamino h2{
-      text-align:center;
-      margin-bottom:35px;
-      font-size:28px;
-      letter-spacing:2px;
-      color:#5a1e00;
-      text-shadow:0 0 8px rgba(139,69,19,0.6);
-    }
-
-    .contenidoPergamino p{
-      white-space: pre-line;
-      font-size:16px;
-    }
-
-    .contenidoPergamino button{
-      margin-top:35px;
-      padding:10px 25px;
-      background:#8b5a2b;
-      border:none;
-      color:white;
-      cursor:pointer;
-      border-radius:6px;
-      font-family:'Orbitron', sans-serif;
-      font-size:14px;
-    }
-
-    /* 🎨 SCROLL PERSONALIZADA */
-    .contenidoPergamino::-webkit-scrollbar {
-      width:12px;
-    }
-
-    .contenidoPergamino::-webkit-scrollbar-track {
-      background:#e6c98f;
-      border-radius:10px;
-    }
-
-    .contenidoPergamino::-webkit-scrollbar-thumb {
-      background:linear-gradient(180deg,#5a2d00,#8b5a2b);
-      border-radius:10px;
-      border:2px solid #e6c98f;
-    }
-
-    .contenidoPergamino::-webkit-scrollbar-thumb:hover {
-      background:linear-gradient(180deg,#7a3b00,#a05f2d);
-    }
-
-  </style>
+button:hover{
+  transform:scale(1.1);
+  box-shadow:0 0 25px rgba(255,69,0,1);
+}
+</style>
 </head>
 
 <body>
 
-<!-- INTRO -->
-<div id="introPantalla">
-  <div class="introOverlay">
-    <div class="introTexto">
-      <p id="textoIntro"></p>
-    </div>
-  </div>
-</div>
+<div class="escena activa" id="escena1">
+  <div class="fondo" style="background-image:url('img/tsunade1.jpg');"></div>
+  <div class="particulas" id="particulas1"></div>
 
-<!-- MARCADOR -->
-<div id="marcadorObjetos">
-  Objetos: 0 / 1
-</div>
-
-<!-- PERGAMINO -->
-<div id="pergaminoUI">
-  <div class="contenidoPergamino">
-    <h2>Carta de la Hokage</h2>
+  <div class="contenido">
+    <h1>La Aldea Oculta de la Hoja está en peligro...</h1>
     <p>
-Shinobi,
-
-Una tragedia ha golpeado nuestra aldea.
-Sakura y Sasuke han sido capturados por un enemigo que se mueve en las sombras.
-
-No ha dejado rastro… solo enigmas dispersos en cada sala.
-Pruebas ocultas. Objetos sellados. Pistas diseñadas para confundir incluso al más hábil.
-
-Deberás superar cada desafío, reunir las piezas del rompecabezas
-y descubrir el lugar donde los mantienen prisioneros.
-
-El tiempo corre.
-Y esta vez… no habrá una segunda oportunidad.
-
-Confío en tu fuerza.
-Confío en tu determinación.
-
-El destino de tus compañeros está en tus manos.
-
-— Tsunade
+      Tsunade ha recibido información sobre un enemigo que ha capturado
+      a Sakura y Sasuke. Solo tú puedes infiltrarte en los escenarios,
+      descubrir las pistas ocultas y completar la misión antes de que sea demasiado tarde.
     </p>
-    <button onclick="cerrarPergamino()">Cerrar</button>
+    <button onclick="cambiarEscena()">Continuar</button>
   </div>
 </div>
 
-<a-scene physics="gravity: -9.8">
+<div class="escena" id="escena2">
+  <div class="fondo" style="background-image:url('img/tsunade2.jpg');"></div>
+  <div class="particulas" id="particulas2"></div>
 
-  <a-assets>
-    <a-asset-item id="salahokagee" src="assets/salahokage.glb"></a-asset-item>
-    <a-asset-item id="pergamino" src="assets/pergaminhos.glb"></a-asset-item>
-    <a-asset-item id="carta" src="assets/cartatsunade.glb"></a-asset-item>
-  </a-assets>
-
-  <a-entity id="player"
-            position="0 1.6 3"
-            dynamic-body="shape: capsule; radius: 0.35; height: 1.6; mass: 5; linearDamping: 0.9">
-
-    <a-entity camera look-controls wasd-controls="acceleration: 30">
-      <a-entity cursor="rayOrigin: mouse"
-                raycaster="objects: .clickable">
-      </a-entity>
-    </a-entity>
-  </a-entity>
-
-  <a-light type="ambient" intensity="1"></a-light>
-  <a-light type="directional" position="1 3 2" intensity="0.7"></a-light>
-
-  <a-entity id="salaTsunade"
-            gltf-model="#salahokagee"
-            position="2.723 0 0.603"
-            scale="1 1 1"
-            static-body="shape: mesh">
-  </a-entity>
-
-  <a-entity id="pergaminoo"
-            class="clickable"
-            gltf-model="#pergamino"
-            position="-6.996 1.055 1.529"
-            rotation="0 45 0"
-            scale="0 0 0">
-  </a-entity>
-
-  <a-entity id="cartaa"
-            class="clickable"
-            gltf-model="#carta"
-            position="-6.696 1.011 1.121"
-            rotation="0 109.642 0"
-            scale="0.01 0.01 0.01">
-  </a-entity>
-
-</a-scene>
+  <div class="contenido">
+    <h1>Escape Room 3D</h1>
+    <p>
+      Supera las 4 salas, recoge los objetos necesarios
+      y completa el rescate final.
+    </p>
+    <button onclick="window.location.href='sala1.html'">
+      Iniciar Misión
+    </button>
+  </div>
+</div>
 
 <script>
+function cambiarEscena(){
+  const escena1 = document.getElementById("escena1");
+  const escena2 = document.getElementById("escena2");
 
-/* INTRO */
-const texto = `La misión comienza en la oficina de la Hokage...
+  escena1.classList.remove("activa");
 
-Sakura y Sasuke han sido capturados.
+  setTimeout(()=>{
+    escena2.classList.add("activa");
+  },1500);
+}
 
-El destino de la aldea depende de ti.`;
-
-let i = 0;
-let velocidad = 40;
-let introElemento = document.getElementById("textoIntro");
-
-function escribirIntro(){
-  if(i < texto.length){
-    introElemento.innerHTML += texto.charAt(i);
-    i++;
-    setTimeout(escribirIntro, velocidad);
+function crearParticulas(id){
+  const contenedor = document.getElementById(id);
+  for(let i=0;i<40;i++){
+    const p = document.createElement("div");
+    p.classList.add("particula");
+    p.style.left = Math.random()*100+"%";
+    p.style.animationDuration = (6 + Math.random()*6)+"s";
+    p.style.animationDelay = Math.random()*5+"s";
+    contenedor.appendChild(p);
   }
 }
 
-escribirIntro();
-
-setTimeout(()=>{
-  document.getElementById("introPantalla").style.display = "none";
-  const escena = document.querySelector("a-scene");
-  escena.style.opacity = "1";
-  escena.style.pointerEvents = "auto";
-},10000);
-
-/* SISTEMA ORIGINAL */
-
-let totalObjetos = 1;
-let colectados = 0;
-
-function colectar(id){
-  const objeto = document.querySelector(id);
-
-  objeto.addEventListener("click", () => {
-
-    if(!objeto.classList.contains("coletado")){
-      objeto.classList.add("coletado");
-
-      objeto.setAttribute("animation",
-        "property: scale; to: 0 0 0; dur: 500");
-
-      colectados++;
-
-      document.getElementById("marcadorObjetos").innerHTML =
-        "Objetos: " + colectados + " / " + totalObjetos;
-
-      if(colectados >= totalObjetos){
-        setTimeout(()=>{
-          window.location.href = "sala2.html";
-        },1000);
-      }
-    }
-  });
-}
-
-function activarCarta(id){
-  const carta = document.querySelector(id);
-
-  carta.addEventListener("click", () => {
-
-    document.getElementById("pergaminoUI").style.display = "flex";
-
-    document.querySelector("[wasd-controls]")
-      .setAttribute("wasd-controls","enabled:false");
-
-    const pergamino = document.querySelector("#pergaminoo");
-    pergamino.setAttribute("animation",
-      "property: scale; to: 0.01 0.01 0.01; dur: 800");
-  });
-}
-
-function cerrarPergamino(){
-  document.getElementById("pergaminoUI").style.display = "none";
-  document.querySelector("[wasd-controls]")
-    .setAttribute("wasd-controls","enabled:true");
-}
-
-colectar("#pergaminoo");
-activarCarta("#cartaa");
-
+crearParticulas("particulas1");
+crearParticulas("particulas2");
 </script>
 
 </body>

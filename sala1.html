@@ -10,11 +10,61 @@
   <!-- FÍSICA -->
   <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
 
-  <!-- FUENTE ORBITRON -->
+  <!-- FUENTE -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
     body { margin:0; overflow:hidden; }
+
+    /* Escena invisible al inicio */
+    a-scene{
+      opacity:0;
+      pointer-events:none;
+    }
+
+    /* ===== INTRO ===== */
+    #introPantalla{
+      position:absolute;
+      width:100%;
+      height:100%;
+      background:url("img/escritorio.webp") center/cover no-repeat;
+      background-size:110%;
+      animation: zoomFondo 10s ease-out forwards;
+      z-index:20;
+    }
+
+    .introOverlay{
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.75);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .introTexto{
+      color:white;
+      text-align:center;
+      max-width:800px;
+      font-family:'Orbitron', sans-serif;
+      animation: fadeInTexto 3s ease-in-out;
+    }
+
+    .introTexto p{
+      font-size:18px;
+      line-height:1.8;
+      white-space:pre-line;
+    }
+
+    @keyframes zoomFondo{
+      from{background-size:110%;}
+      to{background-size:120%;}
+    }
+
+    @keyframes fadeInTexto{
+      from{opacity:0;}
+      to{opacity:1;}
+    }
 
     /* ===== MARCADOR ===== */
     #marcadorObjetos{
@@ -28,7 +78,6 @@
       font-family:'Orbitron', sans-serif;
       z-index:15;
       font-size:14px;
-      letter-spacing:1px;
     }
 
     /* ===== PERGAMINO UI ===== */
@@ -43,19 +92,30 @@
       z-index:10;
     }
 
+    /* 🔥 PAPEL QUEMADO */
     .contenidoPergamino{
       width:650px;
       max-height:80vh;
       overflow-y:auto;
-      background:linear-gradient(180deg,#f8e6c0,#e2c48f);
       padding:60px;
-      border-radius:12px;
-      box-shadow:0 0 60px rgba(255,140,0,0.6);
+      border-radius:6px;
       text-align:left;
-      font-family: 'Orbitron', sans-serif;
-      color:#4b2e05;
+      font-family:'Orbitron', sans-serif;
       line-height:1.8;
-      border:4px solid #c9a45d;
+
+      background:
+        radial-gradient(circle at 20% 20%, rgba(0,0,0,0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(0,0,0,0.15) 0%, transparent 40%),
+        linear-gradient(180deg,#f2e2b8,#e6c98f);
+
+      color:#3a2400;
+
+      border:4px solid transparent;
+      border-image: radial-gradient(circle, #3b1f00 40%, #8b5a2b 70%, transparent 90%) 1;
+
+      box-shadow:
+        0 0 60px rgba(0,0,0,0.6),
+        inset 0 0 40px rgba(0,0,0,0.3);
     }
 
     .contenidoPergamino h2{
@@ -63,7 +123,8 @@
       margin-bottom:35px;
       font-size:28px;
       letter-spacing:2px;
-      color:#7a0000;
+      color:#5a1e00;
+      text-shadow:0 0 8px rgba(139,69,19,0.6);
     }
 
     .contenidoPergamino p{
@@ -73,26 +134,56 @@
 
     .contenidoPergamino button{
       margin-top:35px;
-      padding:12px 30px;
-      background:linear-gradient(45deg,#8b0000,#ff9900);
+      padding:10px 25px;
+      background:#8b5a2b;
       border:none;
       color:white;
       cursor:pointer;
-      border-radius:8px;
-      font-family: 'Orbitron', sans-serif;
+      border-radius:6px;
+      font-family:'Orbitron', sans-serif;
       font-size:14px;
     }
+
+    /* 🎨 SCROLL PERSONALIZADA */
+    .contenidoPergamino::-webkit-scrollbar {
+      width:12px;
+    }
+
+    .contenidoPergamino::-webkit-scrollbar-track {
+      background:#e6c98f;
+      border-radius:10px;
+    }
+
+    .contenidoPergamino::-webkit-scrollbar-thumb {
+      background:linear-gradient(180deg,#5a2d00,#8b5a2b);
+      border-radius:10px;
+      border:2px solid #e6c98f;
+    }
+
+    .contenidoPergamino::-webkit-scrollbar-thumb:hover {
+      background:linear-gradient(180deg,#7a3b00,#a05f2d);
+    }
+
   </style>
 </head>
 
 <body>
 
-<!-- ===== MARCADOR ===== -->
+<!-- INTRO -->
+<div id="introPantalla">
+  <div class="introOverlay">
+    <div class="introTexto">
+      <p id="textoIntro"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MARCADOR -->
 <div id="marcadorObjetos">
   Objetos: 0 / 1
 </div>
 
-<!-- ===== PERGAMINO MENSAJE ===== -->
+<!-- PERGAMINO -->
 <div id="pergaminoUI">
   <div class="contenidoPergamino">
     <h2>Carta de la Hokage</h2>
@@ -134,16 +225,11 @@ El destino de tus compañeros está en tus manos.
             position="0 1.6 3"
             dynamic-body="shape: capsule; radius: 0.35; height: 1.6; mass: 5; linearDamping: 0.9">
 
-    <a-entity camera
-              look-controls
-              wasd-controls="acceleration: 30">
-
+    <a-entity camera look-controls wasd-controls="acceleration: 30">
       <a-entity cursor="rayOrigin: mouse"
                 raycaster="objects: .clickable">
       </a-entity>
-
     </a-entity>
-
   </a-entity>
 
   <a-light type="ambient" intensity="1"></a-light>
@@ -156,7 +242,6 @@ El destino de tus compañeros está en tus manos.
             static-body="shape: mesh">
   </a-entity>
 
-  <!-- Pergamino oculto al inicio -->
   <a-entity id="pergaminoo"
             class="clickable"
             gltf-model="#pergamino"
@@ -165,7 +250,6 @@ El destino de tus compañeros está en tus manos.
             scale="0 0 0">
   </a-entity>
 
-  <!-- Carta -->
   <a-entity id="cartaa"
             class="clickable"
             gltf-model="#carta"
@@ -178,10 +262,39 @@ El destino de tus compañeros está en tus manos.
 
 <script>
 
+/* INTRO */
+const texto = `La misión comienza en la oficina de la Hokage...
+
+Sakura y Sasuke han sido capturados.
+
+El destino de la aldea depende de ti.`;
+
+let i = 0;
+let velocidad = 40;
+let introElemento = document.getElementById("textoIntro");
+
+function escribirIntro(){
+  if(i < texto.length){
+    introElemento.innerHTML += texto.charAt(i);
+    i++;
+    setTimeout(escribirIntro, velocidad);
+  }
+}
+
+escribirIntro();
+
+setTimeout(()=>{
+  document.getElementById("introPantalla").style.display = "none";
+  const escena = document.querySelector("a-scene");
+  escena.style.opacity = "1";
+  escena.style.pointerEvents = "auto";
+},10000);
+
+/* SISTEMA ORIGINAL */
+
 let totalObjetos = 1;
 let colectados = 0;
 
-/* ===== RECOGER PERGAMINO ===== */
 function colectar(id){
   const objeto = document.querySelector(id);
 
@@ -195,7 +308,6 @@ function colectar(id){
 
       colectados++;
 
-      // ACTUALIZAR MARCADOR
       document.getElementById("marcadorObjetos").innerHTML =
         "Objetos: " + colectados + " / " + totalObjetos;
 
@@ -208,7 +320,6 @@ function colectar(id){
   });
 }
 
-/* ===== ACTIVAR CARTA ===== */
 function activarCarta(id){
   const carta = document.querySelector(id);
 
@@ -219,7 +330,6 @@ function activarCarta(id){
     document.querySelector("[wasd-controls]")
       .setAttribute("wasd-controls","enabled:false");
 
-    // Hacer aparecer el pergamino físico
     const pergamino = document.querySelector("#pergaminoo");
     pergamino.setAttribute("animation",
       "property: scale; to: 0.01 0.01 0.01; dur: 800");
@@ -228,7 +338,6 @@ function activarCarta(id){
 
 function cerrarPergamino(){
   document.getElementById("pergaminoUI").style.display = "none";
-
   document.querySelector("[wasd-controls]")
     .setAttribute("wasd-controls","enabled:true");
 }
