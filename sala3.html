@@ -17,7 +17,11 @@
 <a-scene physics="gravity: -9.8">
 
   <a-assets>
-    <a-asset-item id="quarto" src="assets/floresta.glb"></a-asset-item>
+    <a-asset-item id="floresta" src="assets/floresta.glb"></a-asset-item>
+    <a-asset-item id="kunai1" src="assets/kunai1.glb"></a-asset-item>
+    <a-asset-item id="kunai2" src="assets/kunai2.glb"></a-asset-item>
+    <a-asset-item id="gamabunta" src="assets/gamakitty.glb"></a-asset-item>
+    
   </a-assets>
   <a-entity id="player"
             position="0 1.6 3"
@@ -31,8 +35,23 @@
     </a-entity>
   </a-entity>
 
-  <a-entity id="quartoo"
-            gltf-model="#quarto"
+  <a-entity id="florestaa"
+            gltf-model="#floresta"
             position="1.094 0 0.800"
             scale="0.3 0.3 0.3">
   </a-entity>
+
+  <a-entity id="kunaii1" 
+            class="clickable" 
+            gltf-model="assets/kunai1.glb" 
+            position="61.18054 -0.12176 16.25824" 
+            scale="0.002 0.002 0.002">
+  </a-entity>
+  <a-entity id="kunaii2" class="clickable" gltf-model="assets/kunai2.glb" position="65.28408 2.17316 18.96238" scale="0.2 0.2 0.2">
+  </a-entity>
+  </a-entity>
+  </a-entity>
+</a-scene>
+
+</body>
+</html>
