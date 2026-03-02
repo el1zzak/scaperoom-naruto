@@ -4,10 +4,7 @@
   <meta charset="utf-8">
   <title>Sala 2</title>
 
-  <!-- AFRAME -->
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-
-  <!-- FÍSICA -->
   <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
 
   <style>
@@ -57,11 +54,11 @@
             position="1.160 1.163 -1.723"
             scale="0.02 0.02 0.02">
   </a-entity>
-    <a-entity id="monedeiroo"
-            class="clickable"
-            gltf-model="#monedero"
-            position="0 1 0"
-            scale="0.01 0.01 0.01">
+  <a-entity id="moedeiroo" 
+          class="clickable" 
+          gltf-model="assets/moedeiro.glb" 
+          position="-1.5622 1.0341 0.26371" 
+          scale="0.001 0.001 0.001">
   </a-entity>
   <a-plane src="#pared" 
           position="0 1.375 3.31844"
@@ -75,11 +72,11 @@
           rotation="0 -89.933 0" 
           scale="1.951 1.479 0.99">
   <a-plane src="#techo" 
-          position="0.21213 0.84904 2.77695" 
+          position="0.10084 0.849 2.77687" 
           width="3" height="2" 
-          rotation="90.00021045914971 -91.30999197881877 0" 
+          rotation="90.00021045914971 -89.43699294653611 0" 
           scale="1.951 1.479 0.99" 
-  ></a-plane>
+          material="" geometry="">
   </a-plane>
 </a-scene>
 
