@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Sala 2</title>
+
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
+
+  <style>
+    body { margin:0; overflow:hidden; }
+  </style>
+</head>
+
+<body>
+
+<a-scene physics="gravity: -9.8">
+
+  <a-assets>
+    <a-asset-item id="quarto" src="assets/quarto do naruto.glb"></a-asset-item>
+    <a-asset-item id="moedeiro" src="assets/moedeiro.glb"></a-asset-item>
+    <a-asset-item id="bandana" src="assets/bandana.glb"></a-asset-item>
+    <img id="pared" src="img/pared.png">
+    <img id="pared2" src="img/pared2.png">
+    <img id="techo" src="img/techo.avif">
+
+  </a-assets>
+
+  <a-entity id="player"
+            position="0 1.6 3"
+            dynamic-body="shape: capsule; radius: 0.35; height: 1.6; mass: 5; linearDamping: 0.9">
+
+    <a-entity camera
+              look-controls
+              wasd-controls="acceleration: 30">
+
+      <a-entity cursor="rayOrigin: mouse"
+                raycaster="objects: .clickable">
+      </a-entity>
+
+    </a-entity>
+
+  </a-entity>
+
+  <a-entity id="quartoo"
+            gltf-model="#quarto"
+            position="1.094 0 0.800"
+            scale="0.3 0.3 0.3">
+  </a-entity>
+
+  <a-entity id="bandanaa"
+            class="clickable"
+            gltf-model="#bandana"
+            position="1.160 1.163 -1.723"
+            scale="0.02 0.02 0.02">
+  </a-entity>
+  <a-entity id="moedeiroo" 
+          class="clickable" 
+          gltf-model="assets/moedeiro.glb" 
+          position="-1.5622 1.0341 0.26371" 
+          scale="0.001 0.001 0.001">
+  </a-entity>
+  <a-plane src="#pared" 
+          position="0 1.375 3.31844"
+          width="3" height="2"
+          rotation="-180 -0.557 -180" 
+          scale="2.608 1.479 0.99">
+  </a-plane>
+  <a-plane src="#pared2" 
+          position="3.64586 1.397 0.489" 
+          width="3" height="2"
+          rotation="0 -89.933 0" 
+          scale="1.951 1.479 0.99">
+  <a-plane src="#techo" 
+          position="0.10084 0.849 2.77687" 
+          width="3" height="2" 
+          rotation="90.00021045914971 -89.43699294653611 0" 
+          scale="1.951 1.479 0.99" 
+          material="" geometry="">
+  </a-plane>
+</a-scene>
+
+</body>
+</html>

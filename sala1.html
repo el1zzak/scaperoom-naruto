@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Sala da Tsunade</title>
+
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body { margin:0; overflow:hidden; }
+
+    a-scene{
+      opacity:0;
+      pointer-events:none;
+    }
+
+    #introPantalla{
+      position:absolute;
+      width:100%;
+      height:100%;
+      background:url("img/escritorio.webp") center/cover no-repeat;
+      background-size:110%;
+      animation: zoomFondo 10s ease-out forwards;
+      z-index:20;
+    }
+
+    .introOverlay{
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.75);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .introTexto{
+      color:white;
+      text-align:center;
+      max-width:800px;
+      font-family:'Orbitron', sans-serif;
+      animation: fadeInTexto 3s ease-in-out;
+    }
+
+    .introTexto p{
+      font-size:18px;
+      line-height:1.8;
+      white-space:pre-line;
+    }
+
+    @keyframes zoomFondo{
+      from{background-size:110%;}
+      to{background-size:120%;}
+    }
+
+    @keyframes fadeInTexto{
+      from{opacity:0;}
+      to{opacity:1;}
+    }
+
+    #marcadorObjetos{
+      position:absolute;
+      top:20px;
+      right:30px;
+      background:rgba(0,0,0,0.7);
+      color:#ff9900;
+      padding:12px 20px;
+      border-radius:10px;
+      font-family:'Orbitron', sans-serif;
+      z-index:15;
+      font-size:14px;
+    }
+
+    #pergaminoUI{
+      position:absolute;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.65);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      z-index:10;
+    }
+
+    .contenidoPergamino{
+      width:650px;
+      max-height:80vh;
+      overflow-y:auto;
+      padding:60px;
+      border-radius:6px;
+      text-align:left;
+      font-family:'Orbitron', sans-serif;
+      line-height:1.8;
+
+      background:
+        radial-gradient(circle at 20% 20%, rgba(0,0,0,0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(0,0,0,0.15) 0%, transparent 40%),
+        linear-gradient(180deg,#f2e2b8,#e6c98f);
+
+      color:#3a2400;
+
+      border:4px solid transparent;
+      border-image: radial-gradient(circle, #3b1f00 40%, #8b5a2b 70%, transparent 90%) 1;
+
+      box-shadow:
+        0 0 60px rgba(0,0,0,0.6),
+        inset 0 0 40px rgba(0,0,0,0.3);
+    }
+
+    .contenidoPergamino h2{
+      text-align:center;
+      margin-bottom:35px;
+      font-size:28px;
+      letter-spacing:2px;
+      color:#5a1e00;
+      text-shadow:0 0 8px rgba(139,69,19,0.6);
+    }
+
+    .contenidoPergamino p{
+      white-space: pre-line;
+      font-size:16px;
+    }
+
+    .contenidoPergamino button{
+      margin-top:35px;
+      padding:10px 25px;
+      background:#8b5a2b;
+      border:none;
+      color:white;
+      cursor:pointer;
+      border-radius:6px;
+      font-family:'Orbitron', sans-serif;
+      font-size:14px;
+    }
+
+    .contenidoPergamino::-webkit-scrollbar {
+      width:12px;
+    }
+
+    .contenidoPergamino::-webkit-scrollbar-track {
+      background:#e6c98f;
+      border-radius:10px;
+    }
+
+    .contenidoPergamino::-webkit-scrollbar-thumb {
+      background:linear-gradient(180deg,#5a2d00,#8b5a2b);
+      border-radius:10px;
+      border:2px solid #e6c98f;
+    }
+
+    .contenidoPergamino::-webkit-scrollbar-thumb:hover {
+      background:linear-gradient(180deg,#7a3b00,#a05f2d);
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div id="introPantalla">
+  <div class="introOverlay">
+    <div class="introTexto">
+      <p id="textoIntro"></p>
+    </div>
+  </div>
+</div>
+
+<div id="marcadorObjetos">
+  Objetos: 0 / 1
+</div>
+
+<div id="pergaminoUI">
+  <div class="contenidoPergamino">
+    <h2>Carta de la Hokage</h2>
+    <p>
+Shinobi,
+
+Una tragedia ha golpeado nuestra aldea.
+Sakura y Sasuke han sido capturados por un enemigo que se mueve en las sombras.
+
+No ha dejado rastro… solo enigmas dispersos en cada sala.
+Pruebas ocultas. Objetos sellados. Pistas diseñadas para confundir incluso al más hábil.
+
+Deberás superar cada desafío, reunir las piezas del rompecabezas
+y descubrir el lugar donde los mantienen prisioneros.
+
+El tiempo corre.
+Y esta vez… no habrá una segunda oportunidad.
+
+Confío en tu fuerza.
+Confío en tu determinación.
+
+El destino de tus compañeros está en tus manos.
+
+— Tsunade
+    </p>
+    <button onclick="cerrarPergamino()">Cerrar</button>
+  </div>
+</div>
+
+<a-scene physics="gravity: -9.8">
+
+  <a-assets>
+    <a-asset-item id="salahokagee" src="assets/salahokage.glb"></a-asset-item>
+    <a-asset-item id="pergamino" src="assets/pergaminhos.glb"></a-asset-item>
+    <a-asset-item id="carta" src="assets/cartatsunade.glb"></a-asset-item>
+  </a-assets>
+
+  <a-entity id="player"
+            position="0 1.6 3"
+            dynamic-body="shape: capsule; radius: 0.35; height: 1.6; mass: 5; linearDamping: 0.9">
+
+    <a-entity camera look-controls wasd-controls="acceleration: 30">
+      <a-entity cursor="rayOrigin: mouse"
+                raycaster="objects: .clickable">
+      </a-entity>
+    </a-entity>
+  </a-entity>
+
+  <a-light type="ambient" intensity="1"></a-light>
+  <a-light type="directional" position="1 3 2" intensity="0.7"></a-light>
+
+  <a-entity id="salaTsunade"
+            gltf-model="#salahokagee"
+            position="2.723 0 0.603"
+            scale="1 1 1"
+            static-body="shape: mesh">
+  </a-entity>
+
+  <a-entity id="pergaminoo"
+            class="clickable"
+            gltf-model="#pergamino"
+            position="-6.996 1.055 1.529"
+            rotation="0 45 0"
+            scale="0 0 0">
+  </a-entity>
+
+  <a-entity id="cartaa"
+            class="clickable"
+            gltf-model="#carta"
+            position="-6.696 1.011 1.121"
+            rotation="0 109.642 0"
+            scale="0.01 0.01 0.01">
+  </a-entity>
+
+</a-scene>
+
+<script>
+
+const texto = ` - Shikamaru 
+Naruto, Tsunade me dijo que hay algo para ti en su sala... Esté atento a todos y cualquier cosa. Por lo que yo sé, tiene que ver con Sasuke y Sakura`;
+
+let i = 0;
+let velocidad = 40;
+let introElemento = document.getElementById("textoIntro");
+
+function escribirIntro(){
+  if(i < texto.length){
+    introElemento.innerHTML += texto.charAt(i);
+    i++;
+    setTimeout(escribirIntro, velocidad);
+  }
+}
+
+escribirIntro();
+
+setTimeout(()=>{
+  document.getElementById("introPantalla").style.display = "none";
+  const escena = document.querySelector("a-scene");
+  escena.style.opacity = "1";
+  escena.style.pointerEvents = "auto";
+},10000);
+
+
+let totalObjetos = 1;
+let colectados = 0;
+
+function colectar(id){
+  const objeto = document.querySelector(id);
+
+  objeto.addEventListener("click", () => {
+
+    if(!objeto.classList.contains("coletado")){
+      objeto.classList.add("coletado");
+
+      objeto.setAttribute("animation",
+        "property: scale; to: 0 0 0; dur: 500");
+
+      colectados++;
+
+      document.getElementById("marcadorObjetos").innerHTML =
+        "Objetos: " + colectados + " / " + totalObjetos;
+
+      if(colectados >= totalObjetos){
+        setTimeout(()=>{
+          window.location.href = "sala2.html";
+        },1000);
+      }
+    }
+  });
+}
+
+function activarCarta(id){
+  const carta = document.querySelector(id);
+
+  carta.addEventListener("click", () => {
+
+    document.getElementById("pergaminoUI").style.display = "flex";
+
+    document.querySelector("[wasd-controls]")
+      .setAttribute("wasd-controls","enabled:false");
+
+    const pergamino = document.querySelector("#pergaminoo");
+    pergamino.setAttribute("animation",
+      "property: scale; to: 0.01 0.01 0.01; dur: 800");
+  });
+}
+
+function cerrarPergamino(){
+  document.getElementById("pergaminoUI").style.display = "none";
+  document.querySelector("[wasd-controls]")
+    .setAttribute("wasd-controls","enabled:true");
+}
+
+colectar("#pergaminoo");
+activarCarta("#cartaa");
+
+</script>
+
+</body>
+</html>

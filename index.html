@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Misión Shinobi</title>
+
+<!-- FUENTE FUTURISTA -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Orbitron', sans-serif; /* APLICADA A TODO */
+}
+
+body{
+  background:black;
+  overflow:hidden;
+  color:white;
+}
+
+/* ESCENAS */
+.escena{
+  position:absolute;
+  width:100%;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  text-align:center;
+  opacity:0;
+  pointer-events:none;
+  transition: opacity 1.5s ease;
+}
+
+.escena.activa{
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* FONDO CON ZOOM */
+.fondo{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background-size:cover;
+  background-position:center;
+  z-index:-2;
+  animation: zoomDramatico 18s ease-in-out forwards;
+  filter: brightness(0.22);
+}
+
+@keyframes zoomDramatico{
+  from{ transform:scale(1); }
+  to{ transform:scale(1.25); }
+}
+
+/* PARTÍCULAS */
+.particulas{
+  position:absolute;
+  width:100%;
+  height:100%;
+  z-index:-1;
+  overflow:hidden;
+}
+
+.particula{
+  position:absolute;
+  width:4px;
+  height:4px;
+  background:orange;
+  border-radius:50%;
+  opacity:0.7;
+  animation: flotar linear infinite;
+}
+
+@keyframes flotar{
+  from{
+    transform:translateY(100vh);
+    opacity:0;
+  }
+  to{
+    transform:translateY(-10vh);
+    opacity:0.8;
+  }
+}
+
+/* CONTENIDO */
+.contenido{
+  max-width:750px;
+  padding:20px;
+}
+
+h1{
+  font-size:3.2rem;
+  font-weight:800;
+  margin-bottom:6px;
+  color:#ffcc00; /* amarillo */
+  text-shadow:0 0 20px rgba(255,140,0,0.8);
+}
+
+p{
+  font-size:1.2rem;
+  font-weight:400;
+  line-height:1.6;
+  margin-bottom:30px;
+  color:#df752e; /* rojo-naranja */
+  text-shadow:0 0 10px rgba(165, 11, 11, 0.5);
+}
+
+button{
+  padding:15px 40px;
+  font-size:1.1rem;
+  font-weight:600;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  background:linear-gradient(45deg,#ff0000,#ff9900);
+  color:#ffff00;
+  letter-spacing:1px;
+  transition:0.3s;
+  box-shadow:0 0 15px rgba(255,140,0,0.8);
+}
+
+button:hover{
+  transform:scale(1.1);
+  box-shadow:0 0 25px rgba(255,69,0,1);
+}
+</style>
+</head>
+
+<body>
+
+<div class="escena activa" id="escena1">
+  <div class="fondo" style="background-image:url('img/tsunade1.jpg');"></div>
+  <div class="particulas" id="particulas1"></div>
+
+  <div class="contenido">
+    <h1>La Aldea Oculta de la Hoja está en peligro...</h1>
+    <p>
+      Tsunade ha recibido información sobre un enemigo que ha capturado
+      a dos shinobis de nuestra aldea. Solo tú puedes salvarlos antes de que sea demasiado tarde.
+    </p>
+    <button onclick="cambiarEscena()">Continuar</button>
+  </div>
+</div>
+
+<div class="escena" id="escena2">
+  <div class="fondo" style="background-image:url('img/tsunade2.jpg');"></div>
+  <div class="particulas" id="particulas2"></div>
+
+  <div class="contenido">
+    <h1>Escape Room 3D</h1>
+    <p>
+      Sabemos que, Shikamaru quiere hablar contigo sobre algo...
+    </p>
+    <button onclick="window.location.href='sala1.html'">
+      Start
+    </button>
+  </div>
+</div>
+
+<script>
+function cambiarEscena(){
+  const escena1 = document.getElementById("escena1");
+  const escena2 = document.getElementById("escena2");
+
+  escena1.classList.remove("activa");
+
+  setTimeout(()=>{
+    escena2.classList.add("activa");
+  },1500);
+}
+
+function crearParticulas(id){
+  const contenedor = document.getElementById(id);
+  for(let i=0;i<40;i++){
+    const p = document.createElement("div");
+    p.classList.add("particula");
+    p.style.left = Math.random()*100+"%";
+    p.style.animationDuration = (6 + Math.random()*6)+"s";
+    p.style.animationDelay = Math.random()*5+"s";
+    contenedor.appendChild(p);
+  }
+}
+
+crearParticulas("particulas1");
+crearParticulas("particulas2");
+</script>
+
+</body>
+</html>
