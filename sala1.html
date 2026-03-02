@@ -4,25 +4,18 @@
   <meta charset="utf-8">
   <title>Sala da Tsunade</title>
 
-  <!-- AFRAME -->
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-
-  <!-- FÍSICA -->
   <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
-
-  <!-- FUENTE -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
     body { margin:0; overflow:hidden; }
 
-    /* Escena invisible al inicio */
     a-scene{
       opacity:0;
       pointer-events:none;
     }
 
-    /* ===== INTRO ===== */
     #introPantalla{
       position:absolute;
       width:100%;
@@ -66,7 +59,6 @@
       to{opacity:1;}
     }
 
-    /* ===== MARCADOR ===== */
     #marcadorObjetos{
       position:absolute;
       top:20px;
@@ -80,7 +72,6 @@
       font-size:14px;
     }
 
-    /* ===== PERGAMINO UI ===== */
     #pergaminoUI{
       position:absolute;
       width:100%;
@@ -92,7 +83,6 @@
       z-index:10;
     }
 
-    /* 🔥 PAPEL QUEMADO */
     .contenidoPergamino{
       width:650px;
       max-height:80vh;
@@ -144,7 +134,6 @@
       font-size:14px;
     }
 
-    /* 🎨 SCROLL PERSONALIZADA */
     .contenidoPergamino::-webkit-scrollbar {
       width:12px;
     }
@@ -169,7 +158,6 @@
 
 <body>
 
-<!-- INTRO -->
 <div id="introPantalla">
   <div class="introOverlay">
     <div class="introTexto">
@@ -178,12 +166,10 @@
   </div>
 </div>
 
-<!-- MARCADOR -->
 <div id="marcadorObjetos">
   Objetos: 0 / 1
 </div>
 
-<!-- PERGAMINO -->
 <div id="pergaminoUI">
   <div class="contenidoPergamino">
     <h2>Carta de la Hokage</h2>
@@ -262,7 +248,6 @@ El destino de tus compañeros está en tus manos.
 
 <script>
 
-/* INTRO */
 const texto = ` - Shikamaru 
 Naruto, Tsunade me dijo que hay algo para ti en su sala... Esté atento a todos y cualquier cosa. Por lo que yo sé, tiene que ver con Sasuke y Sakura`;
 
@@ -287,7 +272,6 @@ setTimeout(()=>{
   escena.style.pointerEvents = "auto";
 },10000);
 
-/* SISTEMA ORIGINAL */
 
 let totalObjetos = 1;
 let colectados = 0;
