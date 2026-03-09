@@ -7,12 +7,31 @@
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
 
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
     body { margin:0; overflow:hidden; }
+
+    #marcadorObjetos{
+      position:absolute;
+      top:20px;
+      right:30px;
+      background:rgba(0,0,0,0.7);
+      color:#ff9900;
+      padding:12px 20px;
+      border-radius:10px;
+      font-family:'Orbitron', sans-serif;
+      z-index:15;
+      font-size:14px;
+    }
   </style>
 </head>
 
 <body>
+
+<div id="marcadorObjetos">
+Objetos: 0 / 2
+</div>
 
 <a-scene physics="gravity: -9.8">
 
@@ -23,7 +42,6 @@
     <img id="pared" src="img/pared.png">
     <img id="pared2" src="img/pared2.png">
     <img id="techo" src="img/techo.avif">
-
   </a-assets>
 
   <a-entity id="player"
@@ -54,31 +72,79 @@
             position="1.160 1.163 -1.723"
             scale="0.02 0.02 0.02">
   </a-entity>
+
   <a-entity id="moedeiroo" 
           class="clickable" 
           gltf-model="assets/moedeiro.glb" 
           position="-1.5622 1.0341 0.26371" 
           scale="0.001 0.001 0.001">
   </a-entity>
+
   <a-plane src="#pared" 
           position="0 1.375 3.31844"
           width="3" height="2"
           rotation="-180 -0.557 -180" 
           scale="2.608 1.479 0.99">
   </a-plane>
+
   <a-plane src="#pared2" 
           position="3.64586 1.397 0.489" 
           width="3" height="2"
           rotation="0 -89.933 0" 
           scale="1.951 1.479 0.99">
-  <a-plane src="#techo" 
-          position="0.10084 0.849 2.77687" 
-          width="3" height="2" 
-          rotation="90.00021045914971 -89.43699294653611 0" 
-          scale="1.951 1.479 0.99" 
-          material="" geometry="">
   </a-plane>
+
+ <a-plane src="#techo" 
+          position="0.57312 2.74598 0.3862" 
+          width="3" height="2" 
+          rotation="90 -89.437 0" 
+          scale="1.951 3.56706 0.99" 
+          material="" geometry=""> 
+</a-plane>
+
 </a-scene>
+
+<script>
+
+let totalObjetos = 2;
+let colectados = 0;
+
+function colectar(id){
+
+const objeto = document.querySelector(id);
+
+objeto.addEventListener("click", () => {
+
+if(!objeto.classList.contains("coletado")){
+
+objeto.classList.add("coletado");
+
+objeto.setAttribute("animation",
+"property: scale; to: 0 0 0; dur: 500");
+
+colectados++;
+
+document.getElementById("marcadorObjetos").innerHTML =
+"Objetos: " + colectados + " / " + totalObjetos;
+
+if(colectados >= totalObjetos){
+
+setTimeout(()=>{
+window.location.href = "sala3.html";
+},1000);
+
+}
+
+}
+
+});
+
+}
+
+colectar("#bandanaa");
+colectar("#moedeiroo");
+
+</script>
 
 </body>
 </html>
