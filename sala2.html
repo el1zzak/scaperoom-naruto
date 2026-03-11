@@ -55,10 +55,16 @@ text-align:center;
 
 <a-scene physics>
 
-<!-- JUGADOR DEL PROFE -->
+<a-entity id="player"
+            position="0 1.6 3"
+            dynamic-body="shape: capsule; radius: 0.35; height: 1.6; mass: 5; linearDamping: 0.9">
 
-<a-entity id="player" position="0 1.6 3" dynamic-body="shape: capsule; radius: 0.35; height: 1.6; mass: 5; linearDamping: 0.9"> <a-entity camera look-controls wasd-controls="acceleration: 30"> <a-entity cursor="rayOrigin: mouse" raycaster="objects: .clickable"> </a-entity> </a-entity> </a-entity>
-
+    <a-entity camera look-controls wasd-controls="acceleration: 30">
+      <a-entity cursor="rayOrigin: mouse"
+                raycaster="objects: .clickable">
+      </a-entity>
+    </a-entity>
+  </a-entity>
 
 <!-- MODELO CUARTO -->
 
