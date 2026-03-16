@@ -26,6 +26,21 @@ z-index:15;
 font-size:14px;
 }
 
+#mensajeMision{
+position:absolute;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(160,154,154,0.75);
+color:#204d17;
+padding:14px 25px;
+border-radius:12px;
+font-family:'Orbitron',sans-serif;
+z-index:20;
+max-width:700px;
+text-align:center;
+}
+
 #preguntaBox{
 display:none;
 position:absolute;
@@ -56,6 +71,8 @@ cursor:pointer;
 <div id="marcadorObjetos">
 Objetos:0/2
 </div>
+
+<div id="mensajeMision"></div>
 
 <div id="preguntaBox">
 
@@ -127,11 +144,34 @@ rotation="0 0 0"
 visible="false">
 </a-entity>
 
-
-
 </a-scene>
 
 <script>
+
+/* MENSAJE INICIAL */
+
+const texto="Ya tocaba descansar un poco... Voy a caminar un poco a ver si encuentro algo... Pista: El dia que Sasuka y Sasuke dieron comida a Naruto";
+
+let i=0;
+
+function maquina(){
+
+if(i<texto.length){
+
+document.getElementById("mensajeMision").innerHTML+=texto.charAt(i);
+
+i++;
+
+setTimeout(maquina,40);
+
+}
+
+}
+
+window.onload=maquina;
+
+
+/* SISTEMA OBJETOS */
 
 let totalObjetos = 2;
 let colectados = 0;
@@ -171,6 +211,8 @@ colectar("#kunaii1");
 colectar("#kunaii2");
 
 
+/* NPC SAPO */
+
 const sapo = document.querySelector("#sapoNPC");
 
 sapo.addEventListener("click", () => {
@@ -179,6 +221,8 @@ document.getElementById("preguntaBox").style.display = "block";
 
 });
 
+
+/* RESPUESTA PREGUNTA */
 
 function respuesta(correcta){
 

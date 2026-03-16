@@ -13,14 +13,23 @@
 
 body{ margin:0; overflow:hidden; }
 
-/* escena oculta al inicio */
+#marcadorObjetos{
+position:absolute;
+top:20px;
+right:30px;
+background:rgba(0,0,0,0.7);
+color:#ff9900;
+padding:12px 20px;
+border-radius:10px;
+font-family:'Orbitron', sans-serif;
+z-index:15;
+font-size:14px;
+}
 
 a-scene{
 opacity:0;
 pointer-events:none;
 }
-
-/* pantalla de historia */
 
 #introPantalla{
 position:absolute;
@@ -70,7 +79,9 @@ to{opacity:1;}
 
 <body>
 
-<!-- INTRO HISTORIA -->
+<div id="marcadorObjetos">
+Objetos: 0 / 2
+</div>
 
 <div id="introPantalla">
 <div class="introOverlay">
@@ -108,25 +119,34 @@ raycaster="objects: .clickable">
 <a-light type="ambient" intensity="1"></a-light>
 <a-light type="directional" position="1 3 2" intensity="0.7"></a-light>
 
-<a-entity id="valee"
+<a-entity
 gltf-model="#vale"
 position="0.02645 0 0.8"
 scale="1 1 1">
 </a-entity>
 
-<a-entity id="bandanaaa" 
-gltf-model="assets/bandanasasuke.glb" 
-position="0.04748 1.55067 -16.28998" 
-scale="0.02467 0.02484 0.02467" 
-rotation="0.6079082206338035 92.38657967586958 -81.9770824539328">
+<a-entity id="bandanaaa"
+class="clickable"
+gltf-model="assets/bandanasasuke.glb"
+position="2.16952 0.32048 -18.89063"
+scale="0.00625 0.00625 0.00625"
+rotation="0.608 92.387 -81.977">
 </a-entity>
 
-<a-entity id="amigo" 
-gltf-model="assets/narutoysasuke.glb" 
-position="0.026 -0.95333 -28.4638" 
-scale="0.832 0.83213 0.83213">
+<a-entity id="amigo"
+class="clickable"
+gltf-model="assets/narutoysasuke.glb"
+position="0.026 -0.33358 -28.07722"
+scale="0.832 0.832 0.832">
 </a-entity>
 
+<a-plane src="img/agua.avif"
+position="0.54978 0.38069 5.9897"
+width="3"
+height="2"
+rotation="-89.75727635401424 179.9998479605043 179.9998479605043"
+scale="16.93845 30.96848 8.59512">
+</a-plane>
 
 </a-scene>
 
@@ -147,20 +167,17 @@ NOOOOO! YO SOLO QUIERO SABER DONDE ESTÁ SASUKE Y SAKURA.
 
 - Villano
 
-Pues para saber, me tendrás que vencer. 
+Pues para saber, me tendrás que vencer.
 
 - Naruto
 
 Si es así, lo haré.
 
-Si quiero seguir avanzando,
-tendré que descubrir qué es real
-y qué forma parte de la ilusión.
+Si quiero seguir avanzando, tendré que descubrir qué es real y qué forma parte de la ilusión.
 
+Vamos jugador, descubre como salir de aqui.
 
-Vamos jugador, descubre como salir de aqui. 
-
-Pista: El dia que todo cambió en el equipo 7`;
+Pista: El dia que todo cambió en el equipo 7. Veas atraves de la ilusión.;`
 
 let i = 0;
 let velocidad = 40;
@@ -181,8 +198,6 @@ setTimeout(escribirIntro, velocidad);
 
 escribirIntro();
 
-/* cuando termina la intro aparece la escena */
-
 setTimeout(()=>{
 
 document.getElementById("introPantalla").style.display="none";
@@ -191,7 +206,48 @@ const escena = document.querySelector("a-scene");
 escena.style.opacity="1";
 escena.style.pointerEvents="auto";
 
-},20000);
+},30000);
+
+
+let totalObjetos = 2;
+let colectados = 0;
+
+function colectar(id){
+
+const objeto = document.querySelector(id);
+
+objeto.addEventListener("click", () => {
+
+if(!objeto.classList.contains("coletado")){
+
+objeto.classList.add("coletado");
+
+objeto.setAttribute("animation",
+"property: scale; to: 0 0 0; dur: 500");
+
+colectados++;
+
+document.getElementById("marcadorObjetos").innerHTML =
+"Objetos: " + colectados + " / " + totalObjetos;
+
+if(colectados >= totalObjetos){
+
+setTimeout(()=>{
+
+window.location.href="sala5.html";
+
+},1000);
+
+}
+
+}
+
+});
+
+}
+
+colectar("#bandanaaa");
+colectar("#amigo");
 
 </script>
 
