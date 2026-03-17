@@ -23,18 +23,9 @@ Aquest projecte és un joc tipus *escape room en 3D* desenvolupat amb **A-Frame*
 
 ---
 
-## 🛠️ Tecnologies utilitzades
-
-* A-Frame
-* HTML, CSS i JavaScript
-* Models 3D (.glb)
-* aframe-physics-system
-
----
-
 ## 👤 Autor
 
-Nom: **[Maria Elizabeth Araujo Moura]**
+Nom: **Maria Elizabeth Araujo Moura**
 
 ---
 
