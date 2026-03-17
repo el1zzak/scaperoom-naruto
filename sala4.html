@@ -6,7 +6,6 @@
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
-
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -30,6 +29,8 @@ a-scene{
 opacity:0;
 pointer-events:none;
 }
+
+/* INTRO */
 
 #introPantalla{
 position:absolute;
@@ -64,6 +65,21 @@ line-height:1.8;
 white-space:pre-line;
 }
 
+#escenaFinal{
+display:none;
+position:absolute;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.95);
+z-index:40;
+}
+
+button{
+margin-top:20px;
+padding:10px 20px;
+cursor:pointer;
+}
+
 @keyframes zoomFondo{
 from{background-size:110%;}
 to{background-size:120%;}
@@ -87,6 +103,14 @@ Objetos: 0 / 2
 <div class="introOverlay">
 <div class="introTexto">
 <p id="textoIntro"></p>
+</div>
+</div>
+</div>
+
+<div id="escenaFinal">
+<div class="introOverlay">
+<div class="introTexto">
+<p id="textoFinal"></p>
 </div>
 </div>
 </div>
@@ -135,7 +159,7 @@ rotation="0.608 92.387 -81.977">
 
 <a-entity id="amigo"
 class="clickable"
-gltf-model="assets/narutoysasuke.glb"
+gltf-model="assets/equipo7.glb"
 position="0.026 -0.33358 -28.07722"
 scale="0.832 0.832 0.832">
 </a-entity>
@@ -144,8 +168,8 @@ scale="0.832 0.832 0.832">
 position="0.54978 0.38069 5.9897"
 width="3"
 height="2"
-rotation="-89.75727635401424 179.9998479605043 179.9998479605043"
-scale="16.93845 30.96848 8.59512">
+rotation="-89.75 180 180"
+scale="16.9 30.9 8.5">
 </a-plane>
 
 </a-scene>
@@ -156,58 +180,84 @@ const texto = ` - Naruto
 
 Este lugar se siente extraño...
 
-- Villano
+- Orochimaru
 
-Un poderoso genjutsu cubre todo el valle, Naruto... Por fin
-te he atrapado en mi jutsu de ilusión...
+Un poderoso genjutsu cubre todo el valle, Naruto... He capturado a tus amiguitos HAHAHA
 
 - Naruto
 
 NOOOOO! YO SOLO QUIERO SABER DONDE ESTÁ SASUKE Y SAKURA.
 
-- Villano
+- Orochimaru
 
-Pues para saber, me tendrás que vencer.
+Si quieres saber, tendrás que vencerme...
 
-- Naruto
+Jugador, descubre qué es real y qué es ilusión.
 
-Si es así, lo haré.
-
-Si quiero seguir avanzando, tendré que descubrir qué es real y qué forma parte de la ilusión.
-
-Vamos jugador, descubre como salir de aqui.
-
-Pista: El dia que todo cambió en el equipo 7. Veas atraves de la ilusión.;`
+Pista: El día que Sasuke se fue de la aldea.
+`;
 
 let i = 0;
-let velocidad = 40;
 let introElemento = document.getElementById("textoIntro");
 
 function escribirIntro(){
-
 if(i < texto.length){
-
 introElemento.innerHTML += texto.charAt(i);
 i++;
-
-setTimeout(escribirIntro, velocidad);
-
+setTimeout(escribirIntro, 40);
 }
-
 }
 
 escribirIntro();
 
-setTimeout(()=>{
 
+setTimeout(()=>{
 document.getElementById("introPantalla").style.display="none";
 
 const escena = document.querySelector("a-scene");
 escena.style.opacity="1";
 escena.style.pointerEvents="auto";
 
-},30000);
+},20000);
 
+
+
+const textoFinal = `- Orochimaru
+
+Veo que lograste romper parte de mi genjutsu...
+
+- Naruto
+
+Dime dónde están Sasuke y Sakura!
+
+- Orochimaru
+
+Ya los solté...
+
+- Orochimaru
+
+Vayanse a la aldea, de momento quedamos asi, pero...
+
+Nos volveremos a ver muy pronto, Naruto...
+`;
+
+let j = 0;
+
+function escribirFinal(){
+
+const elemento = document.getElementById("textoFinal");
+
+if(j < textoFinal.length){
+
+elemento.innerHTML += textoFinal.charAt(j);
+
+j++;
+
+setTimeout(escribirFinal,40);
+
+}
+
+}
 
 let totalObjetos = 2;
 let colectados = 0;
@@ -232,11 +282,15 @@ document.getElementById("marcadorObjetos").innerHTML =
 
 if(colectados >= totalObjetos){
 
+document.querySelector("a-scene").style.display="none";
+
+document.getElementById("escenaFinal").style.display="block";
+
+escribirFinal();
+
 setTimeout(()=>{
-
 window.location.href="sala5.html";
-
-},1000);
+},15000);
 
 }
 
