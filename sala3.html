@@ -5,14 +5,13 @@
 <title>Sala 3</title>
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-
 body{ margin:0; overflow:hidden; }
-
 #marcadorObjetos{
 position:absolute;
 top:20px;
@@ -25,7 +24,6 @@ font-family:'Orbitron', sans-serif;
 z-index:15;
 font-size:14px;
 }
-
 #mensajeMision{
 position:absolute;
 top:20px;
@@ -40,7 +38,6 @@ z-index:20;
 max-width:700px;
 text-align:center;
 }
-
 #preguntaBox{
 display:none;
 position:absolute;
@@ -55,191 +52,110 @@ font-family:'Orbitron', sans-serif;
 z-index:20;
 text-align:center;
 }
-
 button{
 margin:8px;
 padding:10px 20px;
 font-size:14px;
 cursor:pointer;
 }
-
 </style>
 </head>
 
 <body>
 
-<div id="marcadorObjetos">
-Objetos:0/2
-</div>
-
+<div id="marcadorObjetos">Objetos:0/2</div>
 <div id="mensajeMision"></div>
 
 <div id="preguntaBox">
-
 <p>¿Qué arma usa un ninja?</p>
-
 <button onclick="respuesta(true)">Kunai</button>
 <button onclick="respuesta(false)">Pistola</button>
 <button onclick="respuesta(false)">Espada laser</button>
-
 <p id="mensaje"></p>
-
 </div>
 
-<a-scene physics="gravity: -9.8">
-
+<a-scene physics="debug: false; gravity: -9.8">
 <a-sky color="#87CEEB"></a-sky>
 
 <a-assets>
-
 <a-asset-item id="floresta" src="assets/floresta.glb"></a-asset-item>
 <a-asset-item id="kunai1" src="assets/kunai1.glb"></a-asset-item>
 <a-asset-item id="kunai2" src="assets/kunai2.glb"></a-asset-item>
 <a-asset-item id="sapo" src="assets/gamakitty.glb"></a-asset-item>
-
 </a-assets>
 
 <a-entity id="player"
 position="0 1.6 3"
-dynamic-body="shape: capsule; radius: 0.35; height: 1.6; mass: 5; linearDamping: 0.9">
-
-<a-entity camera
-look-controls
-wasd-controls="acceleration: 40">
-
-<a-entity cursor="rayOrigin: mouse"
-raycaster="objects: .clickable">
-</a-entity>
-
+movement-controls="controls: keyboard; speed: 0.3"
+kinematic-body="radius: 0.4">
+<a-entity camera look-controls position="0 1.6 0">
+<a-entity cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
 </a-entity>
 </a-entity>
 
-<a-entity id="florestaa"
-gltf-model="#floresta"
-position="1.094 0 0.800"
-scale="0.3 0.3 0.3">
-</a-entity>
+<a-entity id="florestaa" gltf-model="#floresta" position="1.094 0 0.800" scale="0.3 0.3 0.3"></a-entity>
 
-<a-entity id="kunaii1"
-class="clickable"
-gltf-model="#kunai1"
-position="61.18054 -0.12176 16.25824"
-scale="0.002 0.002 0.002">
-</a-entity>
+<a-entity id="kunaii1" class="clickable" gltf-model="#kunai1" position="61.18054 -0.12176 16.25824" scale="0.002 0.002 0.002"></a-entity>
+<a-entity id="kunaii2" class="clickable" gltf-model="#kunai2" position="65.915 2.173 20.258" rotation="0 -83.909 0" scale="0.6 0.6 0.6"></a-entity>
+<a-entity id="sapoNPC" class="clickable" gltf-model="#sapo" position="63.88 -0.194 17.03806" scale="160.8257 160.8257 160.8257" visible="false"></a-entity>
 
-<a-entity id="kunaii2"
-class="clickable"
-gltf-model="#kunai2"
-position="65.915 2.173 20.258"
-rotation="0 -83.909 0"
-scale="0.6 0.6 0.6">
-</a-entity>
+<a-box position="0 -0.774 0" scale="170.206 -1.539 146.858" static-body visible="false"></a-box>
+<a-box position="83.607 1.309 13.909" scale="0.020 21.172 159.241" static-body visible="false"></a-box>
+<a-box position="-35.873 1.309 -0.434" scale="0.020 21.172 159.241" static-body visible="false"></a-box>
+<a-box position="6.727 1.309 -13.272" scale="171.712 21.172 0.589" rotation="0.000 13.784 0.000" static-body visible="false"></a-box>
+<a-box position="7.818 7.692 70.834" scale="0.020 21.172 206.377" rotation="-180.000 75.535 -180.000" static-body visible="false"></a-box>
 
-<a-entity id="sapoNPC"
-class="clickable"
-gltf-model="#sapo"
-position="63.88 -0.194 17.03806"
-scale="160.8257 160.8257 160.8257"
-rotation="0 0 0"
-visible="false">
-</a-entity>
+<a-entity light="type: ambient; intensity: 0.8"></a-entity>
 
 </a-scene>
 
 <script>
-
 /* MENSAJE INICIAL */
-
 const texto="Ya tocaba descansar un poco... Voy a caminar un poco a ver si encuentro algo... Pista: El dia que Sasuka y Sasuke dieron comida a Naruto";
-
 let i=0;
-
 function maquina(){
-
 if(i<texto.length){
-
 document.getElementById("mensajeMision").innerHTML+=texto.charAt(i);
-
 i++;
-
 setTimeout(maquina,40);
-
 }
-
 }
-
 window.onload=maquina;
 
-
 /* SISTEMA OBJETOS */
-
 let totalObjetos = 2;
 let colectados = 0;
-
 function colectar(id){
-
 const objeto = document.querySelector(id);
-
 objeto.addEventListener("click", () => {
-
 if(!objeto.classList.contains("coletado")){
-
 objeto.classList.add("coletado");
-
-objeto.setAttribute("animation",
-"property: scale; to: 0 0 0; dur: 500");
-
+objeto.setAttribute("animation", "property: scale; to: 0 0 0; dur: 500");
 colectados++;
-
-document.getElementById("marcadorObjetos").innerHTML =
-"Objetos: " + colectados + " / " + totalObjetos;
-
+document.getElementById("marcadorObjetos").innerHTML = "Objetos: " + colectados + " / " + totalObjetos;
 if(colectados >= totalObjetos){
-
-document.querySelector("#sapoNPC")
-.setAttribute("visible", true);
-
+document.querySelector("#sapoNPC").setAttribute("visible", true);
 }
-
 }
-
 });
-
 }
-
 colectar("#kunaii1");
 colectar("#kunaii2");
 
-
 /* NPC SAPO */
-
 const sapo = document.querySelector("#sapoNPC");
-
 sapo.addEventListener("click", () => {
-
 document.getElementById("preguntaBox").style.display = "block";
-
 });
 
-
 /* RESPUESTA PREGUNTA */
-
 function respuesta(correcta){
-
 if(correcta){
-
 window.location.href = "sala4.html";
-
 }else{
-
-document.getElementById("mensaje").innerHTML =
-"Te has equivocado... intenta otra vez.";
-
+document.getElementById("mensaje").innerHTML = "Te has equivocado... intenta otra vez.";
 }
-
 }
-
 </script>
-
 </body>
 </html>
