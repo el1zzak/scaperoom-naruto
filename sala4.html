@@ -2,14 +2,15 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Sala 4</title>
+<title>Sala 4 - El Valle del Fin</title>
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
+
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-
 body{ margin:0; overflow:hidden; }
 
 #marcadorObjetos{
@@ -28,10 +29,10 @@ font-size:14px;
 a-scene{
 opacity:0;
 pointer-events:none;
+transition: opacity 2s;
 }
 
 /* INTRO */
-
 #introPantalla{
 position:absolute;
 width:100%;
@@ -74,12 +75,6 @@ background:rgba(0,0,0,0.95);
 z-index:40;
 }
 
-button{
-margin-top:20px;
-padding:10px 20px;
-cursor:pointer;
-}
-
 @keyframes zoomFondo{
 from{background-size:110%;}
 to{background-size:120%;}
@@ -89,33 +84,26 @@ to{background-size:120%;}
 from{opacity:0;}
 to{opacity:1;}
 }
-
 </style>
 </head>
 
 <body>
 
-<div id="marcadorObjetos">
-Objetos: 0 / 2
-</div>
+<div id="marcadorObjetos">Objetos: 0 / 2</div>
 
 <div id="introPantalla">
 <div class="introOverlay">
-<div class="introTexto">
-<p id="textoIntro"></p>
-</div>
+<div class="introTexto"><p id="textoIntro"></p></div>
 </div>
 </div>
 
 <div id="escenaFinal">
 <div class="introOverlay">
-<div class="introTexto">
-<p id="textoFinal"></p>
-</div>
+<div class="introTexto"><p id="textoFinal"></p></div>
 </div>
 </div>
 
-<a-scene physics="gravity: -9.8">
+<a-scene physics="debug: false; gravity: -9.8">
 
 <a-sky color="#87CEEB"></a-sky>
 
@@ -127,183 +115,94 @@ Objetos: 0 / 2
 
 <a-entity id="player"
 position="0 1.6 3"
-dynamic-body="shape: capsule; radius: 0.35; height: 1.6; mass: 5; linearDamping: 0.9">
-
-<a-entity camera
-look-controls
-wasd-controls="acceleration: 30">
-
-<a-entity cursor="rayOrigin: mouse"
-raycaster="objects: .clickable">
-</a-entity>
-
+movement-controls="controls: keyboard; speed: 0.25"
+kinematic-body="radius: 0.35">
+<a-entity camera look-controls position="0 1.6 0">
+<a-entity cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
 </a-entity>
 </a-entity>
 
 <a-light type="ambient" intensity="1"></a-light>
 <a-light type="directional" position="1 3 2" intensity="0.7"></a-light>
 
-<a-entity
-gltf-model="#vale"
-position="0.02645 0 0.8"
-scale="1 1 1">
-</a-entity>
+<a-entity gltf-model="#vale" position="0.02645 0 0.8" scale="1 1 1"></a-entity>
 
-<a-entity id="bandanaaa"
-class="clickable"
-gltf-model="assets/bandanasasuke.glb"
-position="2.16952 0.32048 -18.89063"
-scale="0.00625 0.00625 0.00625"
-rotation="0.608 92.387 -81.977">
-</a-entity>
+<a-entity id="bandanaaa" class="clickable" gltf-model="assets/bandanasasuke.glb" 
+position="2.16952 0.32048 -18.89063" scale="0.00625 0.00625 0.00625" rotation="0.608 92.387 -81.977"></a-entity>
 
-<a-entity id="amigo"
-class="clickable"
-gltf-model="assets/equipo7.glb"
-position="0.026 -0.33358 -28.07722"
-scale="0.832 0.832 0.832">
-</a-entity>
+<a-entity id="amigo" class="clickable" gltf-model="assets/equipo7.glb" 
+position="2.672 -0.334 -28.077" scale="0.832 0.832 0.832"></a-entity>
 
-<a-plane src="img/agua.avif"
-position="0.54978 0.38069 5.9897"
-width="3"
-height="2"
-rotation="-89.75 180 180"
-scale="16.9 30.9 8.5">
-</a-plane>
+<a-plane src="img/agua.avif" position="0.55 0.381 10.355" width="3" height="2" rotation="-89.75 180 180" scale="16.9 30.9 8.5"></a-plane>
+
+<a-box position="0 -0.268 0" scale="94.978 -0.859 81.949" color="black" static-body visible="true"></a-box>
+<a-box position="5.813 -2.009 6.217" scale="0.572 -10.866 51.780" rotation="0.000 5.877 0.000" static-body visible="false"></a-box>
+<a-box position="-6.934 -0.774 4.421" scale="0.801 -15.053 55.767" static-body visible="false"></a-box>
+<a-box position="0 -0.774 31.332" scale="20.655 -8.530 1.100" rotation="0.000 -4.296 0.000" static-body visible="false"></a-box>
+
+<a-box position="-1.888 1.232 -34.021" scale="20.655 -8.530 1.100" color="black" static-body visible="true"></a-box>
+<a-box position="-4.920 -0.263 -30.214" scale="1.425 -11.657 20.332" color="black" static-body visible="true"></a-box>
+<a-box position="4.901 1.232 -29.931" scale="0.809 -8.530 23.817" color="black" static-body visible="true"></a-box>
+<a-box position="-1.888 4.128 -34.021" scale="20.665 0.184 26.762" color="black" static-body visible="true"></a-box>
 
 </a-scene>
 
 <script>
-
-const texto = ` - Naruto
-
-Este lugar se siente extraño...
-
-- Orochimaru
-
-Un poderoso genjutsu cubre todo el valle, Naruto... He capturado a tus amiguitos HAHAHA
-
-- Naruto
-
-NOOOOO! YO SOLO QUIERO SABER DONDE ESTÁ SASUKE Y SAKURA.
-
-- Orochimaru
-
-Si quieres saber, tendrás que vencerme...
-
-Jugador, descubre qué es real y qué es ilusión.
-
-Pista: El día que Sasuke se fue de la aldea.
-`;
+// LÓGICA DE TEXTOS (Original)
+const texto = ` - Naruto\n\nEste lugar se siente extraño...\n\n- Orochimaru\n\nUn poderoso genjutsu cubre todo el valle, Naruto... He capturado a tus amiguitos HAHAHA\n\n- Naruto\n\nNOOOOO! YO SOLO QUIERO SABER DONDE ESTÁ SASUKE Y SAKURA.\n\n- Orochimaru\n\nSi quieres saber, tendrás que vencerme...\n\nJugador, descubre qué es real y qué es ilusión.\n\nPista: El día que Sasuke se fue de la aldea.`;
 
 let i = 0;
 let introElemento = document.getElementById("textoIntro");
-
 function escribirIntro(){
 if(i < texto.length){
 introElemento.innerHTML += texto.charAt(i);
-i++;
-setTimeout(escribirIntro, 40);
+i++; setTimeout(escribirIntro, 40);
 }
 }
-
 escribirIntro();
-
 
 setTimeout(()=>{
 document.getElementById("introPantalla").style.display="none";
-
 const escena = document.querySelector("a-scene");
 escena.style.opacity="1";
 escena.style.pointerEvents="auto";
-
 },20000);
 
-
-
-const textoFinal = `- Orochimaru
-
-Veo que lograste romper parte de mi genjutsu...
-
-- Naruto
-
-Dime dónde están Sasuke y Sakura!
-
-- Orochimaru
-
-Ya los solté...
-
-- Orochimaru
-
-Vayanse a la aldea, de momento quedamos asi, pero...
-
-Nos volveremos a ver muy pronto, Naruto...
-`;
+const textoFinal = `- Orochimaru\n\nVeo que lograste romper parte de mi genjutsu...\n\n- Naruto\n\nDime dónde están Sasuke y Sakura!\n\n- Orochimaru\n\nYa los solté...\n\n- Orochimaru\n\nVayanse a la aldea, de momento quedamos asi, pero...\n\nNos volveremos a ver muy pronto, Naruto...`;
 
 let j = 0;
-
 function escribirFinal(){
-
 const elemento = document.getElementById("textoFinal");
-
 if(j < textoFinal.length){
-
 elemento.innerHTML += textoFinal.charAt(j);
-
-j++;
-
-setTimeout(escribirFinal,40);
-
+j++; setTimeout(escribirFinal,40);
+}
 }
 
-}
-
+// LÓGICA DE RECOLECCIÓN (Original)
 let totalObjetos = 2;
 let colectados = 0;
 
 function colectar(id){
-
 const objeto = document.querySelector(id);
-
 objeto.addEventListener("click", () => {
-
 if(!objeto.classList.contains("coletado")){
-
 objeto.classList.add("coletado");
-
-objeto.setAttribute("animation",
-"property: scale; to: 0 0 0; dur: 500");
-
+objeto.setAttribute("animation", "property: scale; to: 0 0 0; dur: 500");
 colectados++;
-
-document.getElementById("marcadorObjetos").innerHTML =
-"Objetos: " + colectados + " / " + totalObjetos;
-
+document.getElementById("marcadorObjetos").innerHTML = "Objetos: " + colectados + " / " + totalObjetos;
 if(colectados >= totalObjetos){
-
 document.querySelector("a-scene").style.display="none";
-
 document.getElementById("escenaFinal").style.display="block";
-
 escribirFinal();
-
-setTimeout(()=>{
-window.location.href="sala5.html";
-},15000);
-
+setTimeout(()=>{ window.location.href="sala5.html"; }, 15000);
 }
-
 }
-
 });
-
 }
 
 colectar("#bandanaaa");
 colectar("#amigo");
-
 </script>
-
 </body>
 </html>
