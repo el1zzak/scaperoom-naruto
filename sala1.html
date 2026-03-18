@@ -5,7 +5,9 @@
   <title>Sala da Tsunade</title>
 
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
+  
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -152,7 +154,6 @@
     .contenidoPergamino::-webkit-scrollbar-thumb:hover {
       background:linear-gradient(180deg,#7a3b00,#a05f2d);
     }
-
   </style>
 </head>
 
@@ -207,9 +208,9 @@ El destino de tus compañeros está en tus manos.
 
   <a-entity id="player"
             position="0 1.6 3"
-            dynamic-body="shape: capsule; radius: 0.35; height: 1.6; mass: 5; linearDamping: 0.9">
-
-    <a-entity camera look-controls wasd-controls="acceleration: 30">
+            movement-controls="controls: keyboard; speed: 0.2"
+            kinematic-body="radius: 0.35">
+    <a-entity camera look-controls position="0 1.6 0">
       <a-entity cursor="rayOrigin: mouse"
                 raycaster="objects: .clickable">
       </a-entity>
@@ -241,12 +242,16 @@ El destino de tus compañeros está en tus manos.
             rotation="0 109.642 0"
             scale="0.01 0.01 0.01">
   </a-entity>
-  
+
+  <a-box position="0 -0.5 0" width="20" height="1" depth="20" static-body visible="false"></a-box>
+  <a-box position="0.488 0.987 0" width="20" scale="0.020 6.356 15.380" static-body visible="false"></a-box>
+  <a-box position="-3.871 0.987 -4.492" width="20" scale="1.224 6.356 0.794" static-body visible="false"></a-box>
+  <a-box position="-3.871 0.987 5.302" width="20" scale="1.224 6.356 0.794" static-body visible="false"></a-box>
+  <a-box position="-7.505 0.987 5.302" width="20" scale="-0.029 6.356 25.532" static-body visible="false"></a-box>
 
 </a-scene>
 
 <script>
-
 const texto = ` - Shikamaru 
 Naruto, Tsunade me dijo que hay UNA CARTA para ti en su sala... Por lo que yo sé, tiene que ver con Sasuke y Sakura`;
 
@@ -271,26 +276,17 @@ setTimeout(()=>{
   escena.style.pointerEvents = "auto";
 },10000);
 
-
 let totalObjetos = 1;
 let colectados = 0;
 
 function colectar(id){
   const objeto = document.querySelector(id);
-
   objeto.addEventListener("click", () => {
-
     if(!objeto.classList.contains("coletado")){
       objeto.classList.add("coletado");
-
-      objeto.setAttribute("animation",
-        "property: scale; to: 0 0 0; dur: 500");
-
+      objeto.setAttribute("animation", "property: scale; to: 0 0 0; dur: 500");
       colectados++;
-
-      document.getElementById("marcadorObjetos").innerHTML =
-        "Objetos: " + colectados + " / " + totalObjetos;
-
+      document.getElementById("marcadorObjetos").innerHTML = "Objetos: " + colectados + " / " + totalObjetos;
       if(colectados >= totalObjetos){
         setTimeout(()=>{
           window.location.href = "sala2.html";
@@ -302,30 +298,24 @@ function colectar(id){
 
 function activarCarta(id){
   const carta = document.querySelector(id);
-
   carta.addEventListener("click", () => {
-
     document.getElementById("pergaminoUI").style.display = "flex";
-
-    document.querySelector("[wasd-controls]")
-      .setAttribute("wasd-controls","enabled:false");
+    // Bloqueamos el movimiento mientras lee (nuevo sistema)
+    document.getElementById("player").setAttribute("movement-controls", "enabled: false");
 
     const pergamino = document.querySelector("#pergaminoo");
-    pergamino.setAttribute("animation",
-      "property: scale; to: 0.01 0.01 0.01; dur: 800");
+    pergamino.setAttribute("animation", "property: scale; to: 0.01 0.01 0.01; dur: 800");
   });
 }
 
 function cerrarPergamino(){
   document.getElementById("pergaminoUI").style.display = "none";
-  document.querySelector("[wasd-controls]")
-    .setAttribute("wasd-controls","enabled:true");
+  // Reactivamos el movimiento (nuevo sistema)
+  document.getElementById("player").setAttribute("movement-controls", "enabled: true");
 }
 
 colectar("#pergaminoo");
 activarCarta("#cartaa");
-
 </script>
-
 </body>
-
+</html>
