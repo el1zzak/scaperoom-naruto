@@ -21,6 +21,10 @@ Aquest projecte és un joc tipus *escape room en 3D* desenvolupat amb **A-Frame*
 
 👉 https://docs.google.com/spreadsheets/d/1XvXzB7115EP2_E-bVucTlQrjZ5fViZAfPFcHijH_8ws/edit?usp=sharing
 
+### 📊 Presentación
+
+👉 https://docs.google.com/presentation/d/1-GNytwnqqP8rdjPLh76ykPyHk3StyMxBsOkA3p6YCnc/edit?usp=sharing
+
 ---
 
 ## 👤 Autor
